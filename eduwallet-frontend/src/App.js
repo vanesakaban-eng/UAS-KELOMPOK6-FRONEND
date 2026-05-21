@@ -1,8 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import Users from "./pages/admin/AdminUsers";
 
-function Register() {
+function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,32 +18,20 @@ function Register() {
           name,
           email,
           password,
-          password_confirmation: password, // 🔥 penting
         }),
       });
 
       const data = await response.json();
+      console.log(data);
 
       if (response.ok) {
         alert("Register berhasil 🎉");
-
-        // reset form
-        setName("");
-        setEmail("");
-        setPassword("");
       } else {
-        console.log("ERROR:", data);
-
-        if (data.errors) {
-          const firstError = Object.values(data.errors)[0][0];
-          alert(firstError);
-        } else {
-          alert(data.message || "Register gagal ❌");
-        }
+        alert("Register gagal ❌");
       }
     } catch (error) {
-      console.error("FETCH ERROR:", error);
-      alert("Server tidak terhubung ❌");
+      console.error(error);
+      alert("Error ❌");
     }
   };
 
@@ -61,7 +47,6 @@ function Register() {
             placeholder="Nama"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required
           />
 
           <input
@@ -70,16 +55,14 @@ function Register() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
 
           <input
             style={styles.input}
             type="password"
-            placeholder="Password (min 8 karakter)"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
 
           <button style={styles.button} type="submit">
@@ -88,17 +71,6 @@ function Register() {
         </form>
       </div>
     </div>
-  );
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Register />} />
-        <Route path="/admin/users" element={<Users />} />
-      </Routes>
-    </BrowserRouter>
   );
 }
 
